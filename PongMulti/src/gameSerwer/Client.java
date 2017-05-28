@@ -18,15 +18,15 @@ import javax.swing.JTextField;
 import javax.xml.bind.annotation.W3CDomHandler;
 
 /**
-* Prosty klient w œrodowisku Swing  
- * Buduje okienko z tekstem do wprowadzania wiadomoœci a
+* Prosty klient w Å›rodowisku Swing  
+ * Buduje okienko z tekstem do wprowadzania wiadomoÅ›ci a
  *
- * Klient postêpuje zgodnie z zasadami, który wygl¹daj¹ nastêpuj¹co:
- * Kiedy serwer wysy³a "SUBMITNAME" klient odpowiada za
- * dopóki klient nie poda nazwy w³asnej, która nie jest  
- * ju¿ w u¿yciu. Wtedy serwer wysy³a pocz¹tek linii
- * Z "NAMEACCEPTED" klient mo¿e teraz zacz¹æ  wysy³anie do serwera dowolnych znaków
- * Rozmowy które zostan¹ wyœwietlone musz¹ rozpoczynaæ siê 
+ * Klient postÄ™puje zgodnie z zasadami, ktÃ³ry wyglÄ…dajÄ… nastÄ™pujÄ…co:
+ * Kiedy serwer wysyÅ‚a "SUBMITNAME" klient odpowiada za
+ * dopÃ³ki klient nie poda nazwy wÅ‚asnej, ktÃ³ra nie jest  
+ * juÅ¼ w uÅ¼yciu. Wtedy serwer wysyÅ‚a poczÄ…tek linii
+ * Z "NAMEACCEPTED" klient moÅ¼e teraz zaczÄ…Ä‡  wysyÅ‚anie do serwera dowolnych znakÃ³w
+ * Rozmowy ktÃ³re zostanÄ… wyÅ›wietlone muszÄ… rozpoczynaÄ‡ siÄ™ 
  * od "MESSAGE".
  */
 public class Client {
@@ -38,16 +38,16 @@ public class Client {
     JTextArea messageArea = new JTextArea(8, 40);
 
     /**
-	 * Konstruktor klienta, tworz¹cy GUI i rejestruj¹c
-     * S³uchacz z pola tekstowego tak, ¿e naciskaj¹c Enter 
-     * Wyzwalacz wysy³a zawartoœæ pola tekstowego do serwera. 
-     * Na pocz¹tku pola tekstowego nie mo¿na edytowaæ, 
-     * Staje siê edytowalne tylko po otrzymaniu klienta NAMEACCEPTED
+	 * Konstruktor klienta, tworzÄ…cy GUI i rejestrujÄ…c
+     * SÅ‚uchacz z pola tekstowego tak, Å¼e naciskajÄ…c Enter 
+     * Wyzwalacz wysyÅ‚a zawartoÅ›Ä‡ pola tekstowego do serwera. 
+     * Na poczÄ…tku pola tekstowego nie moÅ¼na edytowaÄ‡, 
+     * Staje siÄ™ edytowalne tylko po otrzymaniu klienta NAMEACCEPTED
      * od serwera.
      */
     public Client() {
 
-        // Przyk³adowe  GUI
+        // PrzykÅ‚adowe  GUI
         textField.setEditable(false);
         messageArea.setEditable(false);
         frame.getContentPane().add(textField, "North");
@@ -69,7 +69,7 @@ public class Client {
     }
 
     /**
-     * PotwierdŸ wprowadŸ adres serwera.
+     * PotwierdÅº wprowadÅº adres serwera.
      */
     private String getServerAddress() {
         return JOptionPane.showInputDialog(
@@ -80,22 +80,22 @@ public class Client {
     }
 
     /**
-     * WprowadŸ swoj¹ nazwê uzytkownika
+     * WprowadÅº swojÄ… nazwÄ™ uzytkownika
      */
     private String getName() {
         return JOptionPane.showInputDialog(
             frame,
-            "Wpisz swoj¹ nazwê gracza:",
-            "WprowadŸ nazwê gracza",
+            "Wpisz swojÄ… nazwÄ™ gracza:",
+            "WprowadÅº nazwÄ™ gracza",
             JOptionPane.PLAIN_MESSAGE);
     }
 
     /**
-     *£¹czy siê z serwerem, a nastêpnie wchodzi do pêtli przetwarzania.
+     *ÅÄ…czy siÄ™ z serwerem, a nastÄ™pnie wchodzi do pÄ™tli przetwarzania.
      */
     private void run() throws IOException {
 
-        // Nawi¹¿ po³¹czenie i zainicjuj strumienie
+        // NawiÄ…Å¼ poÅ‚Ä…czenie i zainicjuj strumienie
         String serverAddress = getServerAddress();
         @SuppressWarnings("resource")
 		Socket socket = new Socket(serverAddress, 9001);
@@ -103,7 +103,7 @@ public class Client {
             socket.getInputStream()));
         out = new PrintWriter(socket.getOutputStream(), true);
 
-        // Przetwarzaj wszystkie wiadomoœci z serwera, zgodnie z protoko³em.
+        // Przetwarzaj wszystkie wiadomoÅ›ci z serwera, zgodnie z protokoÅ‚em.
         while (true) {
             String line = in.readLine();
             if (line.startsWith("SUBMITNAME")) {
@@ -117,7 +117,7 @@ public class Client {
     }
 
     /**
-     * Uruchamia klienta jako aplikacjê z okienkow¹.
+     * Uruchamia klienta jako aplikacjÄ™ z okienkowÄ….
      */
     public static void main(String[] args) throws Exception {
         Client client = new Client();
