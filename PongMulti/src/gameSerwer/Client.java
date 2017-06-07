@@ -1,128 +1,107 @@
 package gameSerwer;
 
-
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.xml.bind.annotation.W3CDomHandler;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
-* Prosty klient w środowisku Swing  
- * Buduje okienko z tekstem do wprowadzania wiadomości a
+ * Prosty klient w środowisku Swing Buduje okienko z tekstem do wprowadzania
+ * wiadomości a
  *
- * Klient postępuje zgodnie z zasadami, który wyglądają następująco:
- * Kiedy serwer wysyła "SUBMITNAME" klient odpowiada za
- * dopóki klient nie poda nazwy własnej, która nie jest  
- * już w użyciu. Wtedy serwer wysyła początek linii
- * Z "NAMEACCEPTED" klient może teraz zacząć  wysyłanie do serwera dowolnych znaków
- * Rozmowy które zostaną wyświetlone muszą rozpoczynać się 
- * od "MESSAGE".
+ * Klient postępuje zgodnie z zasadami, który wyglądają następująco: Kiedy
+ * serwer wysyła "SUBMITNAME" klient odpowiada za dopóki klient nie poda nazwy
+ * własnej, która nie jest już w użyciu. Wtedy serwer wysyła początek linii Z
+ * "NAMEACCEPTED" klient może teraz zacząć wysyłanie do serwera dowolnych znaków
+ * Rozmowy które zostaną wyświetlone muszą rozpoczynać się od "MESSAGE".
  */
-public class Client {
+public class Client  {
 
-    BufferedReader in;
-    PrintWriter out;
-    JFrame frame = new JFrame("Chatter");
-    JTextField textField = new JTextField(40);
-    JTextArea messageArea = new JTextArea(8, 40);
+	BufferedReader in;
+	PrintWriter out;
+	BlockingQueue<String> queue;
 
-    /**
-	 * Konstruktor klienta, tworzący GUI i rejestrując
-     * Słuchacz z pola tekstowego tak, że naciskając Enter 
-     * Wyzwalacz wysyła zawartość pola tekstowego do serwera. 
-     * Na początku pola tekstowego nie można edytować, 
-     * Staje się edytowalne tylko po otrzymaniu klienta NAMEACCEPTED
-     * od serwera.
-     */
-    public Client() {
+	String myID;
+	String serverAddress;
 
-        // Przykładowe  GUI
-        textField.setEditable(false);
-        messageArea.setEditable(false);
-        frame.getContentPane().add(textField, "North");
-        frame.getContentPane().add(new JScrollPane(messageArea), "Center");
-        frame.pack();
+	/**
+	 * Konstruktor klienta, tworzący GUI i rejestrując Słuchacz z pola
+	 * tekstowego tak, że naciskając Enter Wyzwalacz wysyła zawartość pola
+	 * tekstowego do serwera. Na początku pola tekstowego nie można edytować,
+	 * Staje się edytowalne tylko po otrzymaniu klienta NAMEACCEPTED od serwera.
+	 * 
+	 * @throws IOException
+	 */
+	public Client(String myID, String serverAddress) throws IOException {
+		this.myID = myID;
+		this.serverAddress = serverAddress;
+		 queue = new ArrayBlockingQueue<String>(7024);
+		 connectProcess.start();
 
-        //  Listeners
-        textField.addActionListener(new ActionListener() {
-            /**
-             * Responds to pressing the enter key in the textfield by sending
-             * the contents of the text field to the server.    Then clear
-             * the text area in preparation for the next message.
-             */
-            public void actionPerformed(ActionEvent e) {
-                out.println(textField.getText());
-                textField.setText("");
-            }
-        });
-    }
+	}
 
-    /**
-     * Potwierdź wprowadź adres serwera.
-     */
-    private String getServerAddress() {
-        return JOptionPane.showInputDialog(
-            frame,
-            "Wpisz ip serwera gry ",
-            "Witam",
-            JOptionPane.QUESTION_MESSAGE);
-    }
+	/**
+	 * Łączy się z serwerem, a następnie wchodzi do pętli przetwarzania.
+	 */
+	Thread connectProcess= new Thread() {
+		@Override
+		public void run() {
+			int lenMyId=myID.length()+6;
+			// Nawiąż połączenie i zainicjuj strumienie
+			// Przetwarzaj wszystkie wiadomości z serwera, zgodnie z protokołem.
+			try {
+				@SuppressWarnings("resource")
+				Socket socket = new Socket(serverAddress, 9001);
+				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				out = new PrintWriter(socket.getOutputStream(), true);
+			} catch (IOException e1) {
+					e1.printStackTrace();
+			}
 
-    /**
-     * Wprowadź swoją nazwę uzytkownika
-     */
-    private String getName() {
-        return JOptionPane.showInputDialog(
-            frame,
-            "Wpisz swoją nazwę gracza:",
-            "Wprowadź nazwę gracza",
-            JOptionPane.PLAIN_MESSAGE);
-    }
+			while (true) {
+				String line = null;
+				try {
+					line = in.readLine();
+				} catch (IOException e) {
+				}
+				if (line.startsWith("SUBMITNAME")) {
+					out.println(myID);
+				} else if (line.startsWith("NAMEACCEPTED")) {
+					System.out.println(line + " " + myID);
+				} else if (line.startsWith("MESSAGE")) {
+					if (!(checkName(line).equals(myID))){ 
+						queue.add(line.substring(8+checkName(line).length()+6));
+					}
+				}
+			}
+		}
+		private String checkName(String tekst) {
+		final Pattern pattern = Pattern.compile("<n>(.+?)<k>");
+		final Matcher matcher = pattern.matcher(tekst);
+		matcher.find();
+		return matcher.group(1);
+		}
 
-    /**
-     *Łączy się z serwerem, a następnie wchodzi do pętli przetwarzania.
-     */
-    private void run() throws IOException {
+	};
 
-        // Nawiąż połączenie i zainicjuj strumienie
-        String serverAddress = getServerAddress();
-        @SuppressWarnings("resource")
-		Socket socket = new Socket(serverAddress, 9001);
-        in = new BufferedReader(new InputStreamReader(
-            socket.getInputStream()));
-        out = new PrintWriter(socket.getOutputStream(), true);
+	public void send(String toSend) {
+		out.println(toSend);
 
-        // Przetwarzaj wszystkie wiadomości z serwera, zgodnie z protokołem.
-        while (true) {
-            String line = in.readLine();
-            if (line.startsWith("SUBMITNAME")) {
-                out.println(getName());
-            } else if (line.startsWith("NAMEACCEPTED")) {
-                textField.setEditable(true);
-            } else if (line.startsWith("MESSAGE")) {
-                messageArea.append(line.substring(8) + "\n");
-            }
-        }
-    }
+	}
 
-    /**
-     * Uruchamia klienta jako aplikację z okienkową.
-     */
-    public static void main(String[] args) throws Exception {
-        Client client = new Client();
-        client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        client.frame.setVisible(true);
-        client.run();
-    }
+	public String recive() {
+		String ret = "";
+		if (!queue.isEmpty())
+			ret = queue.poll();
+
+		return ret;
+	}
+
+
+
 }

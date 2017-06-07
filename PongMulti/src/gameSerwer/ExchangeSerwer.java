@@ -110,7 +110,7 @@ public class ExchangeSerwer {
                 // Gdy uda³o siê wybraæ unikaln¹ nazwê, dodaj
                 // socket do zestawu wszystkich odbieraj¹cych
                 // klient mo¿e teraz odbieraæ wiadomoœci.
-                out.println("NAMEACCEPTED");
+              out.println("NAMEACCEPTED");
                 writers.add(out);
 
                 // Przyjmowanie wiadomoœci od aktualnego klienta oraz jej wyemitowanie do reszty klientów.
@@ -121,7 +121,7 @@ public class ExchangeSerwer {
                         return;
                     }
                     for (PrintWriter writer : writers) {
-                        writer.println("MESSAGE " + name + ": " + input);   //TODO:  Tutaj trzeba wybraæ formê wiadomoœci 
+                        writer.println("MESSAGE <n>" + name + "<k>" + input);   //TODO:  Tutaj trzeba wybraæ formê wiadomoœci 
                     }
                 }
                 
