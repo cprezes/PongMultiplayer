@@ -6,13 +6,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
-
 /**
  * Klasa generuj¹ca oraz zarz¹dzaj¹ca rakietk¹ gracza. W postaci prostok¹ta o
  * zdefiniowanej szerokoœæ. W kasie s¹ zawarte metody definiuj¹ce zachowanie
  * oraz podrzenie rakiety gracza. Przechowywane w s¹ tu równie¿ statystyki
  * ka¿dego obiektu rakiety, parametry okreœlaj¹ce wyœwietlanie oraz okreœlaj¹cy
- * interakcje z obiektem {@link PongBall} zmieniaj¹c jego wektory ruchu.
+ * interakcje z obiektem {@link PongBall} zmieniaj¹c jego wektory ruchu oraz
+ * pomorzenie w przestrzeni na podstawie interakcji.
  */
 public class PongRacket {
 
@@ -29,8 +29,8 @@ public class PongRacket {
 	/**
 	 * Bezparametryczny konstruktor klasy, Uruchamia metody ³aduj¹ce kontent
 	 * oraz wype³niaj¹ce wiêkszoœæ pól obiektu. Wiêkszoœæ wartoœæ parametrów
-	 * zostaje za³adowana zdefiniowanymi na sta³e wartoœciami 
-	 * okreœlaj¹cymi wielkoœæ i szerokoœæ prostok¹ta {@link PongRacket} oraz parametry
+	 * zostaje za³adowana zdefiniowanymi na sta³e wartoœciami okreœlaj¹cymi
+	 * wielkoœæ i szerokoœæ prostok¹ta {@link PongRacket} oraz parametry
 	 * definiuj¹ce rodzaj wyœwietlania elementu
 	 */
 	public PongRacket() {
