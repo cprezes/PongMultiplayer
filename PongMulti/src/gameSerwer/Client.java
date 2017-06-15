@@ -94,7 +94,7 @@ public class Client  {
 
 	}
 
-	public String recive() {
+	public String receive() {
 		String ret = "";
 		if (!queue.isEmpty())
 			ret = queue.poll();

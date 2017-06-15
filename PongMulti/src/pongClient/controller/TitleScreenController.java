@@ -2,11 +2,13 @@ package pongClient.controller;
 
 import java.io.File;
 
+import javafx.application.Application;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
+import pongClient.view.Credits;
 import pongClient.view.TitleScreenView;
-
+import pongClient.view.*;
 //warto przyjrzec sie patternowi Dependency Injection/ Inversion of Control
 
 public class TitleScreenController {
@@ -104,7 +106,7 @@ public class TitleScreenController {
 	}
 
 	public void playPressed() {
-		System.out.println("wcisnieto");
-	}
+	
+Credits credits = new Credits();
 
-}
+}}

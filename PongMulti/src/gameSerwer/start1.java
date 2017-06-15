@@ -10,17 +10,17 @@ public class start1 {
 		TimeUnit.SECONDS.sleep(1);
 		Client client2 = new Client("client2","localhost");
 		TimeUnit.SECONDS.sleep(1);
-		client1.send("test client 1");
+		client1.send("wysylam info jako client1");
 		TimeUnit.SECONDS.sleep(1);
-		w(client1.recive()+"c1");
+		w(client1.receive()+" client 1 odbior");
 		TimeUnit.SECONDS.sleep(1);
-		w(client2.recive()+"c2");
+		w(client2.receive()+" client 2 odbior");
 		TimeUnit.SECONDS.sleep(1);
-		client2.send("test client 2");
+		client2.send(" jestem clientem 2");
 		TimeUnit.SECONDS.sleep(1);
-		w(client1.recive()+"c1");
+		w(client1.receive()+" client 1 odbior ");
 		TimeUnit.SECONDS.sleep(1);
-		w(client2.recive()+"c2");
+		w(client2.receive()+" client 2 odbior");
 		TimeUnit.SECONDS.sleep(1);
 	}
 	public static void w(String w) {
