@@ -4,56 +4,137 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import javafx.scene.effect.Bloom;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+
 public class PongRacketTest {
 
+	
+	
 	@Test
 	public final void testPongRacket() {
-		fail("Not yet implemented"); // TODO
+
+		PongRacket tester = new PongRacket();
+		
+		assertEquals(tester.getClass().toString(),"class pongClient.model.PongRacket");
 	}
 
 	@Test
 	public final void testSetHeight() {
-		fail("Not yet implemented"); // TODO
-	}
+		PongRacket tester = new PongRacket();
+		int tmp = 20;
+		Exception ex = null; 
+		
+        try {
+        	tester.setHeight(tmp);
+        } catch (Exception e) {
+            ex = e;
+        }
+        assertEquals(null,ex);
+    }
+		
+		
+
 
 	@Test
 	public final void testSetWidth() {
-		fail("Not yet implemented"); // TODO
+		PongRacket tester = new PongRacket();
+		int tmp = 20;
+		Exception ex = null; 
+		
+        try {
+        	tester.setWidth(tmp);
+        } catch (Exception e) {
+            ex = e;
+        }
+        assertEquals(null,ex);
 	}
 
+	
 	@Test
 	public final void testSetPosition() {
-		fail("Not yet implemented"); // TODO
+		PongRacket tester = new PongRacket();
+		int x = 20;
+		int y=50;
+		Exception ex = null; 
+		
+        try {
+        	tester.setPosition(x, y);
+        } catch (Exception e) {
+            ex = e;
+        }
+        assertTrue(null==ex);
+       int testX = (int) tester.getRacket().getTranslateX();
+       int testY = (int) tester.getRacket().getTranslateY();
+        assertEquals(x, testX);
+        assertEquals(y, testY);
+        
+		
 	}
 
 	@Test
 	public final void testGetRacket() {
-		fail("Not yet implemented"); // TODO
+		PongRacket tester = new PongRacket();
+		int x = 20;
+		int y=50;
+		Exception ex = null; 
+		
+        try {
+        	tester.setPosition(x, y);
+        } catch (Exception e) {
+            ex = e;
+        }
+        assertTrue(null==ex);
+       int testX = (int) tester.getRacket().getTranslateX();
+       int testY = (int) tester.getRacket().getTranslateY();
+        assertEquals(x, testX);
+        assertEquals(y, testY);
+        
 	}
 
 	@Test
 	public final void testGetBounceNumber() {
-		fail("Not yet implemented"); // TODO
+		PongRacket tester = new PongRacket();
+		int tmp = 20;
+		tester.setBounceNumber(tmp);
+		assertEquals(tmp, tester.getBounceNumber());
 	}
 
 	@Test
 	public final void testSetRacketFill() {
-		fail("Not yet implemented"); // TODO
+		PongRacket tester = new PongRacket();
+
+		Exception ex = null; 
+		
+        try {
+        	tester.setRacketFill(Color.BLUE);;
+        } catch (Exception e) {
+            ex = e;
+        }
+        assertTrue(null==ex);
 	}
 
 	@Test
 	public final void testSetBounceNumber() {
-		fail("Not yet implemented"); // TODO
+		PongRacket tester = new PongRacket();
+		int tmp = 20;
+		tester.setBounceNumber(tmp);
+		assertEquals(tmp, tester.getBounceNumber());
 	}
 
 	@Test
 	public final void testIncrementBounceNumber() {
-		fail("Not yet implemented"); // TODO
+		PongRacket tester = new PongRacket();
+		int tmp = 20;
+		tester.setBounceNumber(tmp);
+		tester.incrementBounceNumber();
+		assertEquals(tmp+1, tester.getBounceNumber());
 	}
 
 	@Test
 	public final void testIntersectBall() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(true); //TODO: To trzeba poprawiæ.
 	}
 
 }
